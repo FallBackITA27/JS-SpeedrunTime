@@ -14,9 +14,10 @@ class SpeedrunTime {
      * @param {number} inputSeconds 
      * @param {number} inputMilliseconds 
      * @param {string} inputSign 
+     * @param {string} inputPlayer 
      * @returns SpeedrunTimeString object
      */
-    constructor(inputHours = 0, inputMinutes = 0, inputSeconds = 0, inputMilliseconds = 0, inputSign = "+") {
+    constructor(inputHours = 0, inputMinutes = 0, inputSeconds = 0, inputMilliseconds = 0, inputSign = "+", inputPlayer = undefined) {
         // Inputs !== "number"
         if (typeof inputMilliseconds !== "number") throw new Error("TypeError: inputMilliseconds has to be of type 'int'");
         if (typeof inputSeconds !== "number") throw new Error("TypeError: inputSeconds has to be of type 'int'");
@@ -38,8 +39,17 @@ class SpeedrunTime {
         this.minutes = inputMinutes;
         this.seconds = inputSeconds;
         this.milliseconds = inputMilliseconds;
+        this.player = inputPlayer;
         this.sign = inputSign;
-        this.timeString = `${this.hours.toString().padStart(2,"0")}:${this.minutes.toString().padStart(2,"0")}:${this.seconds.toString().padStart(2,"0")}.${this.milliseconds.toString().padStart(3,"0")}`;
+        /**
+         * @param {string} stringType can be: "colon", "quote", "text"
+         */
+        this.timeString = function(stringType = "colon"){
+            if (stringType==="colon") return `${this.hours.toString().padStart(2,"0")}:${this.minutes.toString().padStart(2,"0")}:${this.seconds.toString().padStart(2,"0")}.${this.milliseconds.toString().padStart(3,"0")}`;
+            else if (stringType==="quote") return `${this.hours.toString().padStart(2,"0")}'${this.minutes.toString().padStart(2,"0")}'${this.seconds.toString().padStart(2,"0")}"${this.milliseconds.toString().padStart(3,"0")}`;
+            else if (stringType==="text") return `${this.hours.toString().padStart(2,"0")}h ${this.minutes.toString().padStart(2,"0")}m ${this.seconds.toString().padStart(2,"0")}s ${this.milliseconds.toString().padStart(3,"0")}ms`;
+            else throw new Error(`Unknown format '${stringType}'`);
+        }
     };
 }
 
@@ -123,3 +133,9 @@ function sumSpeedrunTimes(SpeedrunTimeArray){
     return new SpeedrunTime(hours,minutes,seconds,milliseconds);
 };
 
+/**
+ * @param {Array<SpeedrunTime>} SpeedrunTimeArray
+ */
+function sortSpeedrunTimes(SpeedrunTimeArray){
+
+}
