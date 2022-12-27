@@ -106,29 +106,20 @@ function sumSpeedrunTimes(SpeedrunTimeArray){
         }
     }
     if (milliseconds>999) {
-        seconds += Math.floor(milliseconds/1000);
-        milliseconds -= Math.floor(milliseconds/1000);
+        let extra = Math.floor(milliseconds/1000);
+        seconds += extra;
+        milliseconds -= 1000*extra;
     }
     if (seconds>59) {
-        minutes += Math.floor(seconds/60);
-        seconds -= Math.floor(seconds/60);
+        let extra = Math.floor(seconds/60);
+        minutes += extra;
+        seconds -= 60*extra;
     }
     if (minutes>59) {
-        hours += Math.floor(minutes/60);
-        minutes -= Math.floor(minutes/60);
+        let extra = Math.floor(minutes/60);
+        hours += extra;
+        minutes -= 60*extra;
     }
     return new SpeedrunTime(hours,minutes,seconds,milliseconds);
 };
-
-function test(){
-    let x = [
-        "01:12",
-        "10:23",
-        "14:15",
-        "34:10"
-    ]
-    console.log(x.map(r=>timeStringToSpeedrunTime(r)))
-    console.log(sumSpeedrunTimes(x.map(r=>timeStringToSpeedrunTime(r))))
-}
-test()
 
