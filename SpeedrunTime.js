@@ -51,6 +51,16 @@ class SpeedrunTime {
             else throw new Error(`Unknown format '${stringType}'`);
         }
     };
+
+    /**
+     * @returns A SpeedrunTime object that has its this.hours, this.minutes... times' internal sign inverted.
+     */
+    convertSigns(){
+        this.hours=this.hours*-1;
+        this.minutes=this.minutes*-1;
+        this.seconds=this.seconds*-1;
+        this.milliseconds=this.milliseconds*-1;
+    };
 }
 
 /**
@@ -138,20 +148,12 @@ function sumSpeedrunTimes(SpeedrunTimeArray){
  * @param {string} order "ascending" or "descending"
  */
 function sortSpeedrunTimes(SpeedrunTimeArray,order = "ascending"){
-    for (let time of SpeedrunTimeArray) {  // could use .map() but for some reason it just returns undefined????
-        time.hours=time.hours*-1;
-        time.minutes=time.minutes*-1;
-        time.seconds=time.seconds*-1;
-        time.milliseconds=time.milliseconds*-1;
-    }
+    for (let time of SpeedrunTimeArray) time.convertSigns();
+    // could use .map() but for some reason it just returns undefined????
+    // very ugly solution but this will do for now kekw, TODO: find better option.
     if (order === "descending") SpeedrunTimeArray = SpeedrunTimeArray.sort((a,b)=>a.milliseconds - b.milliseconds).sort((a,b)=>a.seconds - b.seconds).sort((a,b)=>a.minutes - b.minutes).sort((a,b)=>a.hours - b.hours);
     else if (order === "ascending") SpeedrunTimeArray = SpeedrunTimeArray.sort((a,b)=>b.milliseconds - a.milliseconds).sort((a,b)=>b.seconds - a.seconds).sort((a,b)=>b.minutes - a.minutes).sort((a,b)=>b.hours - a.hours);
     else throw new Error(`order has to be 'ascending' or 'descending', not ${order}`);
-    for (let time of SpeedrunTimeArray) {  // very ugly solution but this will do for now kekw, TODO: find better option.
-        time.hours=time.hours*-1;
-        time.minutes=time.minutes*-1;
-        time.seconds=time.seconds*-1;
-        time.milliseconds=time.milliseconds*-1;
-    }
+    for (let time of SpeedrunTimeArray) time.convertSigns();
     return SpeedrunTimeArray;
 }
